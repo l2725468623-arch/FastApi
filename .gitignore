@@ -1,0 +1,27 @@
+# Python 缓存与编译文件
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+*.egg
+dist/
+build/
+
+# 虚拟环境
+venv/
+.venv/
+env/
+.env
+
+# 编辑器临时备份文件（如 README.md~）
+*~
+*.swp
+*.swo
+
+# IDE 配置
+.vscode/
+.idea/
+
+# 日志
+*.log
