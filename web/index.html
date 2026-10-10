@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f7fb">
+  <title>头条 · 新闻分类</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #172033;
+      --muted: #788196;
+      --line: #e8ebf2;
+      --blue: #4263eb;
+      --paper: #fff;
+      --bg: #f5f7fb;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.5 "Segoe UI", "Microsoft YaHei", sans-serif; }
+    .topbar { height: 68px; display: flex; align-items: center; justify-content: space-between; padding: 0 max(24px, calc((100% - 1120px) / 2)); background: var(--paper); border-bottom: 1px solid var(--line); }
+    .brand { display: flex; align-items: center; gap: 11px; font-weight: 700; letter-spacing: .2px; }
+    .brand-mark { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 11px; background: var(--blue); color: #fff; font-size: 18px; }
+    .brand small { display: block; color: var(--muted); font-size: 11px; font-weight: 500; letter-spacing: 1px; }
+    .top-label { color: var(--muted); font-size: 13px; }
+    main { width: min(100% - 40px, 1000px); margin: 52px auto; }
+    .eyebrow { color: var(--blue); font-size: 12px; font-weight: 700; letter-spacing: 1.4px; }
+    h1 { margin: 7px 0 5px; font-size: clamp(27px, 4vw, 36px); letter-spacing: -.8px; }
+    .intro { margin: 0; color: var(--muted); }
+    .panel { margin-top: 28px; overflow: hidden; border: 1px solid var(--line); border-radius: 16px; background: var(--paper); box-shadow: 0 8px 28px #25345a08; }
+    .toolbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 22px; border-bottom: 1px solid var(--line); }
+    .count { font-weight: 650; }
+    .count span { margin-left: 8px; color: var(--muted); font-size: 13px; font-weight: 400; }
+    .tools { display: flex; gap: 9px; }
+    input { width: min(240px, 45vw); padding: 10px 12px; border: 1px solid var(--line); border-radius: 9px; outline: none; color: var(--ink); font: inherit; }
+    input:focus { border-color: #8da2ff; box-shadow: 0 0 0 3px #4263eb18; }
+    button { padding: 10px 14px; border: 0; border-radius: 9px; background: var(--blue); color: #fff; cursor: pointer; font: inherit; font-weight: 600; }
+    button:hover { background: #3451d1; }
+    button:disabled { opacity: .55; cursor: wait; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(215px, 1fr)); gap: 14px; padding: 20px 22px 24px; }
+    .card { position: relative; min-height: 116px; padding: 18px; border: 1px solid var(--line); border-radius: 12px; background: linear-gradient(145deg, #fff, #fafbff); transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease; }
+    .card:hover { transform: translateY(-2px); border-color: #cbd4ff; box-shadow: 0 8px 20px #263c7d10; }
+    .card-top { display: flex; align-items: center; justify-content: space-between; }
+    .card-title { font-size: 18px; font-weight: 700; }
+    .badge { padding: 3px 8px; border-radius: 99px; background: #eef1ff; color: var(--blue); font-size: 11px; font-weight: 650; }
+    .card-meta { margin-top: 18px; color: var(--muted); font-size: 12px; }
+    .state { padding: 46px 20px; color: var(--muted); text-align: center; grid-column: 1 / -1; }
+    .state.error { color: #c24141; }
+    .footer { display: flex; align-items: center; gap: 7px; padding: 14px 22px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; }
+    .dot { width: 7px; height: 7px; border-radius: 50%; background: #2eae72; }
+    .dot.offline { background: #d14f4f; }
+    @media (max-width: 560px) { main { width: min(100% - 26px, 1000px); margin: 34px auto; } .topbar { padding: 0 18px; } .toolbar { align-items: flex-start; flex-direction: column; padding: 17px; } .tools { width: 100%; } input { flex: 1; width: 0; } .grid { padding: 15px; } }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark">头</span><span>头条<small>NEWS CONSOLE</small></span></div>
+    <div class="top-label">内容管理 · 新闻分类</div>
+  </header>
+  <main>
+    <div class="eyebrow">CONTENT CENTER</div>
+    <h1>新闻分类</h1>
+    <p class="intro">查看当前系统中的新闻栏目。</p>
+    <section class="panel" aria-label="新闻分类列表">
+      <div class="toolbar">
+        <div class="count">全部分类 <span id="count">正在加载…</span></div>
+        <div class="tools">
+          <input id="search" type="search" placeholder="搜索分类名称" aria-label="搜索分类名称">
+          <button id="refresh" type="button">刷新</button>
+        </div>
+      </div>
+      <div id="grid" class="grid" aria-live="polite"><div class="state">正在读取分类…</div></div>
+      <div class="footer"><span id="dot" class="dot"></span><span id="status">正在连接服务</span></div>
+    </section>
+  </main>
+  <script>
+    const grid = document.querySelector('#grid');
+    const count = document.querySelector('#count');
+    const search = document.querySelector('#search');
+    const refresh = document.querySelector('#refresh');
+    const statusText = document.querySelector('#status');
+    const statusDot = document.querySelector('#dot');
+    let categories = [];
+
+    function render() {
+      const keyword = search.value.trim().toLocaleLowerCase();
+      const visible = categories.filter(item => String(item.name).toLocaleLowerCase().includes(keyword));
+      count.textContent = `共 ${categories.length} 个`;
+      if (!visible.length) {
+        grid.innerHTML = `<div class="state">${categories.length ? '没有匹配的分类' : '暂无分类数据'}</div>`;
+        return;
+      }
+      grid.innerHTML = visible.map(item => `
+        <article class="card">
+          <div class="card-top"><div class="card-title">${escapeHtml(item.name)}</div><span class="badge">栏目</span></div>
+          <div class="card-meta">分类编号 ${escapeHtml(item.id)} <span aria-hidden="true">·</span> 排序 ${escapeHtml(item.sort_order ?? 0)}</div>
+        </article>`).join('');
+    }
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
+    }
+
+    async function loadCategories() {
+      refresh.disabled = true;
+      statusText.textContent = '正在连接服务';
+      statusDot.classList.remove('offline');
+      try {
+        const response = await fetch('/api/news/categories', { headers: { Accept: 'application/json' } });
+        if (!response.ok) throw new Error(`接口返回 ${response.status}`);
+        const result = await response.json();
+        if (!Array.isArray(result.data)) throw new Error(result.message || '分类数据格式不正确');
+        categories = result.data;
+        render();
+        statusText.textContent = '服务连接正常';
+      } catch (error) {
+        categories = [];
+        count.textContent = '加载失败';
+        grid.innerHTML = `<div class="state error">无法读取分类：${escapeHtml(error.message)}<br>请检查后端服务和 MySQL 连接。</div>`;
+        statusText.textContent = '服务连接失败';
+        statusDot.classList.add('offline');
+      } finally {
+        refresh.disabled = false;
+      }
+    }
+
+    search.addEventListener('input', render);
+    refresh.addEventListener('click', loadCategories);
+    loadCategories();
+  </script>
+</body>
+</html>
