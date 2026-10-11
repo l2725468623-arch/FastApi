@@ -3,129 +3,159 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f5f7fb">
-  <title>头条 · 新闻分类</title>
+  <meta name="theme-color" content="#eef3fa">
+  <title>新闻资讯</title>
   <style>
-    :root {
-      color-scheme: light;
-      --ink: #172033;
-      --muted: #788196;
-      --line: #e8ebf2;
-      --blue: #4263eb;
-      --paper: #fff;
-      --bg: #f5f7fb;
-    }
     * { box-sizing: border-box; }
-    body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.5 "Segoe UI", "Microsoft YaHei", sans-serif; }
-    .topbar { height: 68px; display: flex; align-items: center; justify-content: space-between; padding: 0 max(24px, calc((100% - 1120px) / 2)); background: var(--paper); border-bottom: 1px solid var(--line); }
-    .brand { display: flex; align-items: center; gap: 11px; font-weight: 700; letter-spacing: .2px; }
-    .brand-mark { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 11px; background: var(--blue); color: #fff; font-size: 18px; }
-    .brand small { display: block; color: var(--muted); font-size: 11px; font-weight: 500; letter-spacing: 1px; }
-    .top-label { color: var(--muted); font-size: 13px; }
-    main { width: min(100% - 40px, 1000px); margin: 52px auto; }
-    .eyebrow { color: var(--blue); font-size: 12px; font-weight: 700; letter-spacing: 1.4px; }
-    h1 { margin: 7px 0 5px; font-size: clamp(27px, 4vw, 36px); letter-spacing: -.8px; }
-    .intro { margin: 0; color: var(--muted); }
-    .panel { margin-top: 28px; overflow: hidden; border: 1px solid var(--line); border-radius: 16px; background: var(--paper); box-shadow: 0 8px 28px #25345a08; }
-    .toolbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 22px; border-bottom: 1px solid var(--line); }
-    .count { font-weight: 650; }
-    .count span { margin-left: 8px; color: var(--muted); font-size: 13px; font-weight: 400; }
-    .tools { display: flex; gap: 9px; }
-    input { width: min(240px, 45vw); padding: 10px 12px; border: 1px solid var(--line); border-radius: 9px; outline: none; color: var(--ink); font: inherit; }
-    input:focus { border-color: #8da2ff; box-shadow: 0 0 0 3px #4263eb18; }
-    button { padding: 10px 14px; border: 0; border-radius: 9px; background: var(--blue); color: #fff; cursor: pointer; font: inherit; font-weight: 600; }
-    button:hover { background: #3451d1; }
-    button:disabled { opacity: .55; cursor: wait; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(215px, 1fr)); gap: 14px; padding: 20px 22px 24px; }
-    .card { position: relative; min-height: 116px; padding: 18px; border: 1px solid var(--line); border-radius: 12px; background: linear-gradient(145deg, #fff, #fafbff); transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease; }
-    .card:hover { transform: translateY(-2px); border-color: #cbd4ff; box-shadow: 0 8px 20px #263c7d10; }
-    .card-top { display: flex; align-items: center; justify-content: space-between; }
-    .card-title { font-size: 18px; font-weight: 700; }
-    .badge { padding: 3px 8px; border-radius: 99px; background: #eef1ff; color: var(--blue); font-size: 11px; font-weight: 650; }
-    .card-meta { margin-top: 18px; color: var(--muted); font-size: 12px; }
-    .state { padding: 46px 20px; color: var(--muted); text-align: center; grid-column: 1 / -1; }
-    .state.error { color: #c24141; }
-    .footer { display: flex; align-items: center; gap: 7px; padding: 14px 22px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; }
-    .dot { width: 7px; height: 7px; border-radius: 50%; background: #2eae72; }
-    .dot.offline { background: #d14f4f; }
-    @media (max-width: 560px) { main { width: min(100% - 26px, 1000px); margin: 34px auto; } .topbar { padding: 0 18px; } .toolbar { align-items: flex-start; flex-direction: column; padding: 17px; } .tools { width: 100%; } input { flex: 1; width: 0; } .grid { padding: 15px; } }
+    body { margin: 0; background: #eef3fa; color: #252a32; font: 14px/1.55 "Microsoft YaHei", "PingFang SC", sans-serif; }
+    .phone { width: min(100%, 414px); min-height: 100vh; margin: 0 auto; background: #fff; box-shadow: 0 0 28px #1b31500b; }
+    .header { position: sticky; z-index: 2; top: 0; background: #fff; }
+    .title { height: 48px; display: grid; place-items: center; border-bottom: 1px solid #f1f1f1; font-size: 16px; font-weight: 700; }
+    .tabs-wrap { position: relative; padding-right: 48px; background: #fff; }
+    .tabs { display: flex; gap: 0; overflow-x: auto; scrollbar-width: none; white-space: nowrap; }
+    .tabs::-webkit-scrollbar { display: none; }
+    .tab { position: relative; flex: 0 0 auto; min-width: 49px; padding: 12px 10px 11px; border: 0; background: transparent; color: #85898f; cursor: pointer; font: inherit; }
+    .tab.active { color: #3286d6; font-weight: 700; }
+    .tab.active::after { position: absolute; right: 10px; bottom: 0; left: 10px; height: 3px; border-radius: 3px; background: #3286d6; content: ""; }
+    .more { position: absolute; top: 0; right: 0; height: 43px; padding: 0 9px; border: 0; background: linear-gradient(90deg, #ffffffc9, #fff 25%); color: #3286d6; font: inherit; }
+    .news-list { min-height: 220px; }
+    .news-card { display: flex; gap: 12px; min-height: 112px; padding: 13px 15px; border-bottom: 1px solid #f0f0f0; }
+    .copy { display: flex; min-width: 0; flex: 1; flex-direction: column; }
+    .news-title { display: -webkit-box; overflow: hidden; margin: 0; color: #262a30; font-size: 15px; font-weight: 700; line-height: 1.55; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+    .news-desc { display: -webkit-box; overflow: hidden; margin-top: 5px; color: #777d85; font-size: 13px; line-height: 1.5; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+    .meta { display: flex; gap: 14px; margin-top: auto; padding-top: 6px; color: #a0a4aa; font-size: 11px; }
+    .thumb { position: relative; flex: 0 0 104px; width: 104px; height: 76px; overflow: hidden; align-self: center; border-radius: 4px; background: linear-gradient(140deg, #d9e7ef, #f4e8cf); }
+    .thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .thumb-placeholder { display: grid; width: 100%; height: 100%; place-items: center; color: #fff; font-size: 22px; font-weight: 700; background: linear-gradient(140deg, #84b9d5, #8fc8b2 55%, #e9c77d); }
+    .state { padding: 58px 20px; color: #969ba3; text-align: center; }
+    .state.error { color: #bf5555; }
+    .load-more { display: block; width: 100%; padding: 16px; border: 0; background: #fff; color: #368bd3; cursor: pointer; font: inherit; }
+    .load-more:disabled { color: #a5a9af; cursor: default; }
+    .end { padding: 18px; color: #b0b4ba; text-align: center; font-size: 12px; }
+    @media (min-width: 700px) { .phone { margin: 22px auto; min-height: calc(100vh - 44px); border-radius: 5px; overflow: hidden; } }
   </style>
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand"><span class="brand-mark">头</span><span>头条<small>NEWS CONSOLE</small></span></div>
-    <div class="top-label">内容管理 · 新闻分类</div>
-  </header>
-  <main>
-    <div class="eyebrow">CONTENT CENTER</div>
-    <h1>新闻分类</h1>
-    <p class="intro">查看当前系统中的新闻栏目。</p>
-    <section class="panel" aria-label="新闻分类列表">
-      <div class="toolbar">
-        <div class="count">全部分类 <span id="count">正在加载…</span></div>
-        <div class="tools">
-          <input id="search" type="search" placeholder="搜索分类名称" aria-label="搜索分类名称">
-          <button id="refresh" type="button">刷新</button>
-        </div>
+  <main class="phone">
+    <header class="header">
+      <div class="title">新闻资讯</div>
+      <div class="tabs-wrap">
+        <nav id="tabs" class="tabs" aria-label="新闻分类">
+          <button class="tab active" data-id="0" type="button">头条</button>
+        </nav>
+        <button class="more" type="button" aria-label="查看更多分类">更多 ›</button>
       </div>
-      <div id="grid" class="grid" aria-live="polite"><div class="state">正在读取分类…</div></div>
-      <div class="footer"><span id="dot" class="dot"></span><span id="status">正在连接服务</span></div>
+    </header>
+    <section id="news-list" class="news-list" aria-live="polite">
+      <div class="state">正在加载新闻…</div>
     </section>
+    <button id="load-more" class="load-more" type="button" hidden>加载更多</button>
   </main>
   <script>
-    const grid = document.querySelector('#grid');
-    const count = document.querySelector('#count');
-    const search = document.querySelector('#search');
-    const refresh = document.querySelector('#refresh');
-    const statusText = document.querySelector('#status');
-    const statusDot = document.querySelector('#dot');
-    let categories = [];
-
-    function render() {
-      const keyword = search.value.trim().toLocaleLowerCase();
-      const visible = categories.filter(item => String(item.name).toLocaleLowerCase().includes(keyword));
-      count.textContent = `共 ${categories.length} 个`;
-      if (!visible.length) {
-        grid.innerHTML = `<div class="state">${categories.length ? '没有匹配的分类' : '暂无分类数据'}</div>`;
-        return;
-      }
-      grid.innerHTML = visible.map(item => `
-        <article class="card">
-          <div class="card-top"><div class="card-title">${escapeHtml(item.name)}</div><span class="badge">栏目</span></div>
-          <div class="card-meta">分类编号 ${escapeHtml(item.id)} <span aria-hidden="true">·</span> 排序 ${escapeHtml(item.sort_order ?? 0)}</div>
-        </article>`).join('');
-    }
+    const tabs = document.querySelector('#tabs');
+    const list = document.querySelector('#news-list');
+    const loadMoreButton = document.querySelector('#load-more');
+    const pageSize = 20;
+    let selectedCategory = 0;
+    let page = 1;
+    let hasMore = false;
+    let loading = false;
+    let newsItems = [];
 
     function escapeHtml(value) {
-      return String(value).replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
+      return String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
+    }
+
+    function imageMarkup(value) {
+      const url = String(value ?? '').trim();
+      if (!url || !/^(https?:\/\/|\/|\.\/)/i.test(url)) {
+        return '<div class="thumb-placeholder">头条</div>';
+      }
+      return `<img src="${escapeHtml(url)}" alt="新闻配图" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'), {className:'thumb-placeholder', textContent:'头条'}))">`;
+    }
+
+    function renderNews() {
+      if (!newsItems.length) {
+        list.innerHTML = '<div class="state">当前分类暂时没有新闻</div>';
+        loadMoreButton.hidden = true;
+        return;
+      }
+      list.innerHTML = newsItems.map(item => `
+        <article class="news-card">
+          <div class="copy">
+            <h2 class="news-title">${escapeHtml(item.title || '未命名新闻')}</h2>
+            ${item.description ? `<div class="news-desc">${escapeHtml(item.description)}</div>` : ''}
+            <div class="meta"><span>${escapeHtml(item.author || '新闻资讯')}</span><span>${escapeHtml(item.views ?? 0)} 阅读</span></div>
+          </div>
+          <div class="thumb">${imageMarkup(item.image)}</div>
+        </article>`).join('');
+      loadMoreButton.hidden = !hasMore;
+      loadMoreButton.disabled = loading;
+      loadMoreButton.textContent = loading ? '正在加载…' : '加载更多';
+    }
+
+    async function loadNews(reset = false) {
+      if (loading) return;
+      if (reset) {
+        page = 1;
+        hasMore = false;
+        newsItems = [];
+        list.innerHTML = '<div class="state">正在加载新闻…</div>';
+      }
+      loading = true;
+      loadMoreButton.disabled = true;
+      try {
+        const params = new URLSearchParams({ categoryid: String(selectedCategory), page: String(page), pagesize: String(pageSize) });
+        const response = await fetch(`/api/news/list?${params}`, { headers: { Accept: 'application/json' } });
+        if (!response.ok) throw new Error(`新闻接口返回 ${response.status}`);
+        const result = await response.json();
+        const data = result.data;
+        if (!data || !Array.isArray(data.list)) throw new Error(result.message || '新闻数据格式不正确');
+        newsItems = reset ? data.list : newsItems.concat(data.list);
+        hasMore = Boolean(data.hasmore);
+        if (data.list.length) page += 1;
+        renderNews();
+      } catch (error) {
+        if (reset || !newsItems.length) {
+          list.innerHTML = `<div class="state error">新闻加载失败：${escapeHtml(error.message)}<br>请检查后端接口和数据库。</div>`;
+        } else {
+          loadMoreButton.textContent = '加载失败，点击重试';
+        }
+        loadMoreButton.hidden = false;
+      } finally {
+        loading = false;
+        loadMoreButton.disabled = false;
+      }
     }
 
     async function loadCategories() {
-      refresh.disabled = true;
-      statusText.textContent = '正在连接服务';
-      statusDot.classList.remove('offline');
       try {
         const response = await fetch('/api/news/categories', { headers: { Accept: 'application/json' } });
-        if (!response.ok) throw new Error(`接口返回 ${response.status}`);
+        if (!response.ok) throw new Error(`分类接口返回 ${response.status}`);
         const result = await response.json();
-        if (!Array.isArray(result.data)) throw new Error(result.message || '分类数据格式不正确');
-        categories = result.data;
-        render();
-        statusText.textContent = '服务连接正常';
-      } catch (error) {
-        categories = [];
-        count.textContent = '加载失败';
-        grid.innerHTML = `<div class="state error">无法读取分类：${escapeHtml(error.message)}<br>请检查后端服务和 MySQL 连接。</div>`;
-        statusText.textContent = '服务连接失败';
-        statusDot.classList.add('offline');
-      } finally {
-        refresh.disabled = false;
+        if (!Array.isArray(result.data)) throw new Error('分类数据格式不正确');
+        const categories = result.data.filter(item => item.name !== '头条');
+        tabs.innerHTML = '<button class="tab active" data-id="0" type="button">头条</button>' + categories.map(item =>
+          `<button class="tab" data-id="${Number(item.id)}" type="button">${escapeHtml(item.name)}</button>`
+        ).join('');
+      } catch (_) {
+        // 新闻列表仍可用“头条”查看全部文章。
       }
     }
 
-    search.addEventListener('input', render);
-    refresh.addEventListener('click', loadCategories);
+    tabs.addEventListener('click', event => {
+      const tab = event.target.closest('.tab');
+      if (!tab) return;
+      selectedCategory = Number(tab.dataset.id) || 0;
+      tabs.querySelectorAll('.tab').forEach(item => item.classList.toggle('active', item === tab));
+      loadNews(true);
+    });
+    document.querySelector('.more').addEventListener('click', () => {
+      tabs.scrollBy({ left: 220, behavior: 'smooth' });
+    });
+    loadMoreButton.addEventListener('click', () => loadNews(false));
     loadCategories();
+    loadNews(true);
   </script>
 </body>
 </html>
