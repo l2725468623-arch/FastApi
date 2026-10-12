@@ -38,14 +38,8 @@ async def get_news_detail(db: AsyncSession, news_id: int) -> Tuple[Optional[News
     if article is None:
         return None, []
 
-    related_stmt = (
-        select(News)
-        .where(News.category_id == article.category_id, News.id != article.id)
-        .order_by(News.publish_time.desc(), News.id.desc())
-        .limit(5)
-    )
-    related_result = await db.execute(related_stmt)
-    return article, list(related_result.scalars().all())
+    related_news = await get_related_news(db, article.id, article.category_id)
+    return article, related_news
 
 
 
@@ -60,3 +54,13 @@ async def increase_news_views(db: AsyncSession, news_id: int) -> int:
     await db.commit()
     return await db.scalar(select(News.views).where(News.id == news_id)) or 0
 
+async def get_related_news(db: AsyncSession, news_id: int,category_id:int,limit:int =5) -> List[News]:
+    stmt=select(News).where(
+        News.category_id == category_id,
+        News.id != news_id,
+    ).order_by(
+        News.views.desc(),#desc降序
+        News.publish_time.desc()
+    ).limit(limit)
+    result = await db.execute(stmt)
+    return list(result.scalars().all())

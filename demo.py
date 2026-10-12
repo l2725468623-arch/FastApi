@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from fastapi.responses import FileResponse
 
 from config.database import async_engine
-from routers import news
+from routers import news,user
 
 
 @asynccontextmanager
@@ -24,7 +24,7 @@ def read_root():
 
 
 app.include_router(news.router)
-
+app.include_router(user.router)
 # 启动入口：支持直接点击 PyCharm 运行按钮启动服务
 if __name__ == "__main__":
     import uvicorn
